@@ -139,6 +139,39 @@
 
         <!-- PAGE CONTENT ===================== -->
         <main>
+
+                <!-- Search form ================================================= -->
+                <form method="get" action="Addresses.php" class="flex items-center justify-center">
+            <a href="Addresses.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+            </svg>
+            </a>
+            
+            <label for="simple-search" class="sr-only">Search</label>
+            <div class="relative w-3/5 flex items-center justify center">
+                <input type="text" id="simple-search" name="keywords" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Rechercher" required>
+            </div>
+            <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 gap-2 flex items-center">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+                Rechercher
+            </button>
+        </form>
+        
+        <?php
+            
+        // définit $keywords
+        if (isset($_GET['keywords'])) {
+            $keywords = $_GET['keywords'];
+
+            // Requête SQL pour la recherche
+            $fetchusers = "SELECT * FROM address WHERE email LIKE '%$keywords%'";
+            $addresesData = $cnx->query($fetchusers);
+        } 
+        ?>
+        <!-- Search Form End ============================================== -->
             <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <div class="flex flex-col">
                 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">

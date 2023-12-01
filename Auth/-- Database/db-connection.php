@@ -9,14 +9,16 @@
 
 
 
+    $password2 = password_hash('admin', PASSWORD_BCRYPT);
+
     $address = "
         INSERT INTO address (ville, quartier, rue, code_postal, email, telephone)
-        VALUES  ('safi', 'sanya', '5', '25000', 'amineelkarroudi@gmail.com', 0648414362);
+        VALUES  ('safi', 'centre Ville', '5', '25000', 'aymen@gmail.com', 0658365874);
     ";
 
     $admin = "
-        INSERT INTO user (username, password, address_id)
-        VALUES  ('amineelkarroudi', 'Amiine_elk123', 1);
+        INSERT INTO user (username, password, address_id, role_id)
+        VALUES  ('amine_admin', '$password2', 1, 'Admin');
     ";
 
 
