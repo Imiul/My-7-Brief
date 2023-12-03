@@ -93,6 +93,9 @@ if (isset($_POST['login'])) {
             <div class="errorMessage px-4 mt-2 bg-red-600 text-white rounded  mb-8"></div>
 
             <button type="submit" name="login" class="flex w-full justify-center rounded-md bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+            
+            <p class="w-full text-center mt-4 mb-2"><a href="Reset-password.php"><u>Reset Your Password ?</u></a></p>
+            <p class="w-full text-center">Don't Have An Account ? <a href="#"><u> Sign Up !</u></a></p>
         </form>
     </div>
 
