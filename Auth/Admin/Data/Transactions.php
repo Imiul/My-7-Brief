@@ -172,7 +172,6 @@ if (isset($_GET['rm'])) {
 
         <!-- PAGE CONTENT ===================== -->
         <main>
-
             <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                 <div class="flex flex-col">
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
