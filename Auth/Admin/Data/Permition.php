@@ -9,17 +9,17 @@
     include('../../-- Database/db-connection.php');
 
     
-    if (isset($_POST['add_role'])) {
-        $role_name = $_POST['role_value'];
+    if (isset($_POST['add_permition'])) {
+        $permition_name = $_POST['permition_value'];
 
-        if (empty($role_name)) {
-            echo "<script>alert('Role Name Should Not Be Empty');</script>";
+        if (empty($permition_name)) {
+            echo "<script>alert('Permition Name Should Not Be Empty');</script>";
         } else {
 
-            $query = "INSERT INTO role (name) VALUES ('$role_name')";
+            $query = "INSERT INTO permition (name) VALUES ('$permition_name')";
             $run_query = mysqli_query($cnx, $query);
 
-            echo "<script>alert('Role Added Succesfuly');</script>";
+            echo "<script>alert('Permition Added Succesfuly');</script>";
         }
     }
 
@@ -27,36 +27,36 @@
         $id_to_remove = $_GET['rm'];
 
         $query = "
-            DELETE FROM `role` WHERE `id` = '$id_to_remove';
+            DELETE FROM `permition` WHERE `id` = '$id_to_remove';
         ";
 
         $run_query = mysqli_query($cnx, $query);
-        echo "<script>window.alert('Role Deleated Succesfully');</script>";
-        header("Location: Roles.php");
+        echo "<script>window.alert('Permition Deleated Succesfully');</script>";
+        header("Location: Permition.php");
     }
 
 
     
 
-    if (isset($_POST['update_role'])) {
+    if (isset($_POST['update_permition'])) {
 
-        $updatedRole = $_POST['updatedRole'];
+        $updatedPermition = $_POST['updatedPermition'];
 
         $upd_query = "
-            UPDATE role
-            SET name = '$updatedRole'
+            UPDATE permition
+            SET name = '$updatedPermition'
             WHERE id = ". $_GET['upd']. ";
         ";
 
         $run_upd_query = mysqli_query($cnx, $upd_query);
 
-        echo "<script>window.alert('Role Updated Succesfully');</script>";
-        header("Location: Roles.php");
+        echo "<script>window.alert('Permition Updated Succesfully');</script>";
+        header("Location: Permition.php");
 
     }
 
-    $fetchRoles = "SELECT * FROM role;";
-    $rolesData = $cnx->query($fetchRoles);
+    $fetchRPermition = "SELECT * FROM permition;";
+    $permitionData = $cnx->query($fetchRPermition);
     
 
     if (isset($_POST['logout'])) {
@@ -96,13 +96,14 @@
                     <a href="bank.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Bank's</a>
                     <a href="Agencies.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Agency's</a>
                     <a href="Atm.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Distrubuteur's</a>
-                    <a href="Roles.php" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Role's</a>
+                    <a href="Roles.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Role's</a>
                     <a href="Users.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">User's</a>
                     <a href="Addresses.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Address's</a>
                     <a href="Accounts.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Account's</a>
                     <a href="Transactions.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transaction's</a>
-                    <a href="Permition.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Permition's</a>    
-                </div>
+                    <a href="Permition.php" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Permition's</a>
+
+                    </div>
                 </div>
                 </div>
                 <div class="hidden md:block">
@@ -117,15 +118,14 @@
             </div>
             </div>
 
-            
         </nav>
 
 
         <!-- PAGE CONTENT ===================== -->
         <section id="add" class="mt-20 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <form action="Roles.php" method="post" class="grid gap-4 grid-cols-2 border-b-4 border-gray-600 pb-4">
-                <input name="role_value" type="text" placeholder="Role Name" class="pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
-                <button type="submit" name="add_role" class="bg-gray-600 text-white text-xl rounded">Add Role</button>
+            <form method="post" class="grid gap-4 grid-cols-2 border-b-4 border-gray-600 pb-4">
+                <input name="permition_value" type="text" placeholder="Permition Name" class="pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                <button type="submit" name="add_permition" class="bg-gray-600 text-white text-xl rounded">Add Permition</button>
             </form>
         </section>
 
@@ -141,20 +141,20 @@
                         <thead class="border-b font-medium dark:border-neutral-500">
                             <tr>
                                 <th scope="col" class="px-6 py-4">#</th>
-                                <th scope="col" class="px-6 py-4">Role Name</th>
+                                <th scope="col" class="px-6 py-4">Permition Name</th>
                                 <th scope="col" class="px-6 py-4">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                            foreach($rolesData as $role) {
+                            foreach($permitionData as $permition) {
                                 
                                 echo "<tr class='border-b dark:border-neutral-500'>";
-                                echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $role['id'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $role['name'] . "</td>";
+                                echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $permition['id'] . "</td>";
+                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $permition['name'] . "</td>";
                                 echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                echo "<a href='Roles.php?upd=" . $role['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
-                                echo "<a href='Roles.php?rm=" . $role['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                echo "<a href='Permition.php?upd=" . $permition['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
+                                echo "<a href='Permition.php?rm=" . $permition['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
                                 echo "</td>";
                                 echo "</tr>";
                                 
@@ -171,7 +171,7 @@
         </main>
     </div>
 
-
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++--> 
     <?php
         if(isset($_GET['upd'])) {
             
@@ -186,7 +186,7 @@
             ";
     
             $id_to_update = $_GET['upd'];
-            $fetching = "SELECT * FROM role WHERE id = $id_to_update";
+            $fetching = "SELECT * FROM permition WHERE id = $id_to_update";
             $run_fetching = mysqli_query($cnx, $fetching);
             
             $row = mysqli_fetch_assoc($run_fetching);
@@ -195,8 +195,8 @@
     ?>
     <section id="update" class="hidden mt-20 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <form method="post" class="grid gap-4 grid-cols-2 border-b-4 border-gray-600 pb-4">
-                <input name="updatedRole" type="text" <?php echo "value='" . $row['name'] . "'";?> class="pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
-                <button type="submit" name="update_role" class="bg-gray-600 text-white text-xl rounded">Update Role</button>
+                <input name="updatedPermition" type="text" <?php echo "value='" . $row['name'] . "'";?> class="pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                <button type="submit" name="update_permition" class="bg-gray-600 text-white text-xl rounded">Update Role</button>
             </form>
         </section>
 
@@ -212,9 +212,3 @@
 
 </body>
 </html>
-
-
-
-
-
-    

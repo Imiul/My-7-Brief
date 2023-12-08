@@ -47,7 +47,8 @@ if (isset($_POST['logout'])) {
                     <a href="Data/Addresses.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Address's</a>
                     <a href="Data/Accounts.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Account's</a>
                     <a href="Data/Transactions.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transaction's</a>
-                    </div>
+                    <a href="Data/Permition.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Permition's</a>    
+                </div>
                 </div>
                 </div>
                 <div class="hidden md:block">
@@ -55,9 +56,7 @@ if (isset($_POST['logout'])) {
                 <div class="ml-4 flex items-center md:ml-6">
                     <!-- <button >Log Out</button> -->
                     <form method="post" style="display: flex; align-items: center;">
-                        <?php
-                        echo "<h3 style='color: white; margin-right: 30px;'> ( User Name : " . $_SESSION['name']. " )</h3>";
-                        ?>
+                        
                         <button style="color: red;" name="logout" type="submit">Log Out</button>
                     </form>
                 </div>

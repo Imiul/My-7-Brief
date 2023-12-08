@@ -89,6 +89,11 @@
 
     <!-- TAILWIND CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+
+
     <title>Dashboard</title>
 </head>
 <body>
@@ -110,17 +115,14 @@
                     <a href="Addresses.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Address's</a>
                     <a href="Accounts.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Account's</a>
                     <a href="Transactions.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transaction's</a>
-                    </div>
+                    <a href="Permition.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Permition's</a>    
+                </div>
                 </div>
                 </div>
                 <div class="hidden md:block">
 
                 <div class="ml-4 flex items-center md:ml-6">
-                    <!-- <button >Log Out</button> -->
                     <form method="post" style="display: flex; align-items: center;">
-                        <?php
-                        echo "<h3 style='color: white; margin-right: 30px;'> ( User Name : " . $_SESSION['name']. " )</h3>";
-                        ?>
                         <button style="color: red;" name="logout" type="submit">Log Out</button>
                     </form>
                 </div>
@@ -163,7 +165,7 @@
                 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                     <div class="overflow-hidden">
-                        <table class="min-w-full text-left text-sm font-light">
+                        <table id="example" class="table table-striped" style="width:100%">
                         <thead class="border-b font-medium dark:border-neutral-500">
                             <tr>
                                 <th scope="col" class="px-6 py-4">#</th>
@@ -243,6 +245,17 @@
                 <button name="update_atm" type="submit" class="bg-gray-600 text-white text-xl rounded">Add ATM</button>
             </form>
         </section>
+
+        
+        <script  src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script  src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script  src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+        <script  >
+            $(document).ready(function(){
+                $('#example').DataTable();
+            });
+        </script>
+
 
 </body>
 </html>

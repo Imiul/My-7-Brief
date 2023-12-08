@@ -12,6 +12,9 @@
 </head>
 <body >
     
+<?php
+    header("Location: Auth/Login.php");
+?>
 
     
 </body>

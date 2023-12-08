@@ -70,6 +70,11 @@
 
     <!-- TAILWIND CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+
+
     <title>Dashboard</title>
 </head>
 <body>
@@ -91,17 +96,14 @@
                     <a href="Addresses.php" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Address's</a>
                     <a href="Accounts.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Account's</a>
                     <a href="Transactions.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transaction's</a>
-                    </div>
+                    <a href="Permition.php" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Permition's</a>    
+                </div>
                 </div>
                 </div>
                 <div class="hidden md:block">
 
                 <div class="ml-4 flex items-center md:ml-6">
-                    <!-- <button >Log Out</button> -->
                     <form method="post" style="display: flex; align-items: center;">
-                        <?php
-                        echo "<h3 style='color: white; margin-right: 30px;'> ( User Name : " . $_SESSION['name']. " )</h3>";
-                        ?>
                         <button style="color: red;" name="logout" type="submit">Log Out</button>
                     </form>
                 </div>
@@ -141,7 +143,7 @@
         <main>
 
                 <!-- Search form ================================================= -->
-                <form method="get" action="Addresses.php" class="flex items-center justify-center">
+                <!-- <form method="get" action="Addresses.php" class="flex items-center justify-center">
             <a href="Addresses.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
@@ -158,7 +160,7 @@
                 </svg>
                 Rechercher
             </button>
-        </form>
+        </form> -->
         
         <?php
             
@@ -177,7 +179,7 @@
                 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                     <div class="overflow-hidden">
-                        <table class="min-w-full text-left text-sm font-light">
+                        <table id="example" class="table table-striped" style="width:100%">
                         <thead class="border-b font-medium dark:border-neutral-500">
                             <tr>
                                 <th scope="col" class="px-6 py-4">#</th>
@@ -220,6 +222,15 @@
         </main>
     </div>
 
+
+    <script  src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script  src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script  src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script  >
+        $(document).ready(function(){
+            $('#example').DataTable();
+        });
+    </script>
 
 </body>
 </html>
