@@ -51,10 +51,12 @@ if (isset($_POST['login'])) {
             $_SESSION["name"] = $row['username'];
             $_SESSION["user_type"] = $row['role_id'];
 
-            if ($_SESSION["user_type"] === "Admin") {
+            echo "ah ! ";
+
+            if ($_SESSION["user_type"] === "ADMIN") {
                 header("Location: Admin/index.php");
                 exit;
-            } else if ($row['role_id'] === "User") {
+            } else if ($row['role_id'] === "USER") {
                 header("Location: User/Data.php");
                 exit;
             } 
@@ -95,7 +97,7 @@ if (isset($_POST['login'])) {
             <button type="submit" name="login" class="flex w-full justify-center rounded-md bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
             
             <p class="w-full text-center mt-4 mb-2"><a href="Reset-password.php"><u>Reset Your Password ?</u></a></p>
-            <p class="w-full text-center">Don't Have An Account ? <a href="#"><u> Sign Up !</u></a></p>
+            <p class="w-full text-center">Don't Have An Account ? <a href="sing/signup.php"><u> Sign Up !</u></a></p>
         </form>
     </div>
 

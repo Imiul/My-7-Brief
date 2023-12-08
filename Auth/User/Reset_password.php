@@ -3,7 +3,7 @@
     session_start();
     include('../-- Database/db-connection.php');
 
-    if (!$_SESSION['name'] || $_SESSION['user_type'] != "User") {
+    if (!$_SESSION['name'] || $_SESSION['user_type'] != "USER") {
         header("Location: ../Login.php");
         exit();
     }

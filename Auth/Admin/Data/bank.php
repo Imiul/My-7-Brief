@@ -2,26 +2,52 @@
 
     
     session_start();
-    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "Admin") {
+    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "ADMIN") {
         header("Location: ../../Login.php");
         exit;
     }
 
     include('../../-- DATABASE/db-connection.php');
 
+    // if (isset($_POST['add_bank'])) {
+
+    //     $bankName = $_POST['bankName'];
+    //     $bankImage = $_POST['bankImage'];
+
+    //     if (empty($bankName) || empty($bankImage)) {
+    //         echo "<script>window.alert('Inputs should not be empty');</script>";
+        
+    //     } else {
+
+    //         $query = "
+    //             INSERT INTO bank (name, bank_logo)
+    //             VALUES ('$bankName', '$bankImage');
+    //         ";
+
+    //         $run_query = mysqli_query($cnx, $query);
+    //         echo "<script>window.alert('bank Added successfuly');</script>";
+    //     }
+    // }
+
     if (isset($_POST['add_bank'])) {
 
         $bankName = $_POST['bankName'];
-        $bankImage = $_POST['bankImage'];
 
-        if (empty($bankName) || empty($bankImage)) {
+        $filename = 'produit.png';
+        if (!empty($_FILES['image']['name'])) {
+            $image = $_FILES['image']['name'];
+            $filename = uniqid() . $image;
+            move_uploaded_file($_FILES['image']['tmp_name'], '../../../Assets/Img/' . $filename);
+        }
+
+        if (empty($bankName) || empty($filename)) {
             echo "<script>window.alert('Inputs should not be empty');</script>";
         
         } else {
 
             $query = "
                 INSERT INTO bank (name, bank_logo)
-                VALUES ('$bankName', '$bankImage');
+                VALUES ('$bankName', '$filename');
             ";
 
             $run_query = mysqli_query($cnx, $query);
@@ -106,9 +132,9 @@
 
         <!-- PAGE CONTENT ===================== -->
         <section class="mt-20 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8" >
-            <form method="post" class="grid gap-4 grid-cols-2 border-b-4 border-gray-600 pb-4" name="bank_form">
+        <form method="post" enctype="multipart/form-data" class="grid gap-4 grid-cols-2 border-b-4 border-gray-600 pb-4" name="bank_form">
                 <input name="bankName" type="text" placeholder="Bank Name" class=" pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
-                <input name="bankImage" type="text" placeholder="Bank Image Name" class=" pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                <input name="image" type="file" placeholder="Bank Image Name" class=" pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
                 <button type="submit" name="add_bank" class="bg-gray-600 text-white text-xl rounded">Add Bank</button>
             </form>
         </section>
@@ -132,23 +158,23 @@
                         </thead>
                         <tbody>
 
-                            <?php
+                        <?php
 
-                                foreach($banksData as $bank) {
-                                    echo "<tr class='border-b dark:border-neutral-500'>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['id']. "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                    echo " <img src='../../../Assets/Img/" . $bank['bank_logo'] ."' alt='bank logo' width='150px'>";
-                                    echo "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['name']. "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                    echo "<a href='bank.php?upd=" . $bank['id'] . "' class='bg-blue-600 py-2 px-8 text-white font-bold'>Edit</a>";
-                                    echo "<a href='bank.php?rm=" . $bank['id'] . "' class='bg-red-600 py-2 ml-2 px-8 text-white font-bold'>Remove</a>";
-                                    echo "</td>";
+foreach($banksData as $bank) {
+    echo "<tr class='border-b dark:border-neutral-500'>";
+    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['id']. "</td>";
+    echo "<td class='whitespace-nowrap px-6 py-4'>";
+    echo " <img src='../../../Assets/Img/" . $bank['bank_logo'] ."' alt='bank logo' width='150px'>";
+    echo "</td>";
+    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['name']. "</td>";
+    echo "<td class='whitespace-nowrap px-6 py-4'>";
+    echo "<a href='bank.php?upd=" . $bank['id'] . "' class='bg-blue-600 py-2 px-8 text-white font-bold'>Edit</a>";
+    echo "<a href='bank.php?rm=" . $bank['id'] . "' class='bg-red-600 py-2 ml-2 px-8 text-white font-bold'>Remove</a>";
+    echo "</td>";
 
-                                    echo "</tr>";
-                                }
-                            ?>
+    echo "</tr>";
+}
+?>
                         </tbody>
                         </table>
                     </div>

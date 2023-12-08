@@ -2,7 +2,7 @@
 
     
     session_start();
-    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "Admin") {
+    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "ADMIN") {
         header("Location: ../../Login.php");
         exit;
     }

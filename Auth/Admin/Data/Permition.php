@@ -1,7 +1,7 @@
 <?php 
 
     session_start();
-    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "Admin") {
+    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "ADMIN") {
         header("Location: ../../Login.php");
         exit;
     }
@@ -13,13 +13,13 @@
         $permition_name = $_POST['permition_value'];
 
         if (empty($permition_name)) {
-            echo "<script>alert('Permition Name Should Not Be Empty');</script>";
+            echo "<script>alert('permission Name Should Not Be Empty');</script>";
         } else {
 
-            $query = "INSERT INTO permition (name) VALUES ('$permition_name')";
+            $query = "INSERT INTO permission (name) VALUES ('$permition_name')";
             $run_query = mysqli_query($cnx, $query);
 
-            echo "<script>alert('Permition Added Succesfuly');</script>";
+            echo "<script>alert('permission Added Succesfuly');</script>";
         }
     }
 
@@ -27,7 +27,7 @@
         $id_to_remove = $_GET['rm'];
 
         $query = "
-            DELETE FROM `permition` WHERE `id` = '$id_to_remove';
+            DELETE FROM `permission` WHERE `id` = '$id_to_remove';
         ";
 
         $run_query = mysqli_query($cnx, $query);
@@ -43,7 +43,7 @@
         $updatedPermition = $_POST['updatedPermition'];
 
         $upd_query = "
-            UPDATE permition
+            UPDATE permission
             SET name = '$updatedPermition'
             WHERE id = ". $_GET['upd']. ";
         ";
@@ -55,7 +55,7 @@
 
     }
 
-    $fetchRPermition = "SELECT * FROM permition;";
+    $fetchRPermition = "SELECT * FROM permission;";
     $permitionData = $cnx->query($fetchRPermition);
     
 
@@ -186,7 +186,7 @@
             ";
     
             $id_to_update = $_GET['upd'];
-            $fetching = "SELECT * FROM permition WHERE id = $id_to_update";
+            $fetching = "SELECT * FROM permission WHERE id = $id_to_update";
             $run_fetching = mysqli_query($cnx, $fetching);
             
             $row = mysqli_fetch_assoc($run_fetching);

@@ -1,7 +1,7 @@
 <?php 
 
     session_start();
-    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "Admin") {
+    if (!isset($_SESSION['name']) || $_SESSION['user_type'] != "ADMIN") {
         header("Location: ../../Login.php");
         exit;
     }
@@ -19,8 +19,28 @@
             $query = "INSERT INTO role (name) VALUES ('$role_name')";
             $run_query = mysqli_query($cnx, $query);
 
+
+            $find_id = "SELECT id FROM role WHERE name = '$role_name' ";
+            $run_find_id = mysqli_query($cnx, $find_id);
+            $id_row = mysqli_fetch_assoc($run_find_id);
+
+
+            $permition_array = $_POST['permition_id'];
+            foreach($permition_array as $pr) {
+
+                $profrole = "
+                    INSERT INTO permissionofrole (role_id, permission_id)
+                    VALUES (" . $id_row['id'] . ", $pr);
+                ";
+
+                $run_profrole = mysqli_query($cnx, $profrole);
+            }
+
             echo "<script>alert('Role Added Succesfuly');</script>";
         }
+
+
+        
     }
 
     if (isset($_GET['rm'])) {
@@ -65,6 +85,10 @@
         header('Location: ../../Login.php');
         exit();
     }
+
+
+    $fetchPermitionsdb = "SELECT * FROM permission";
+    $permitionsdb = mysqli_query($cnx, $fetchPermitionsdb);
 ?>
 
 <!DOCTYPE html>
@@ -125,6 +149,16 @@
         <section id="add" class="mt-20 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <form action="Roles.php" method="post" class="grid gap-4 grid-cols-2 border-b-4 border-gray-600 pb-4">
                 <input name="role_value" type="text" placeholder="Role Name" class="pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                
+                <select name="permition_id[]" multiple class="pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6">
+                    <option value="">select role permitions</option>
+                    <?php
+                        foreach($permitionsdb as $permition) {
+                            echo "<option value='" . $permition['id'] . "'> " . $permition['name'] . "</option>";
+                        }
+                    ?>
+                </select>
+
                 <button type="submit" name="add_role" class="bg-gray-600 text-white text-xl rounded">Add Role</button>
             </form>
         </section>
