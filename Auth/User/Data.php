@@ -12,7 +12,12 @@
     if (isset($_GET['rm'])) {
         $id_to_remove = $_GET['rm'];
 
-        $run_delete = "DELETE FROM account WHERE id = $id_to_remove";
+        $run_delete = "
+            UPDATE `account`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove';
+        ";
+
         $run_delete = mysqli_query($cnx, $run_delete);
         echo "<script>window.alert('Account Deleted Succesfully');</script>";
         header("Location: Data.php");
@@ -162,15 +167,17 @@
                             $run_find_accounts = mysqli_query($cnx, $find_accounts);
 
                             foreach($run_find_accounts as $accounts_filtred) {
-                                echo "<tr class='border-2 border-gray-600 ' >";
-                                echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['id'] . "</th>";
-                                echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['rib'] . "</th>";
-                                echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['devise'] . "</th>";
-                                echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['balance'] . "</th>";
-                                echo "<td scope='col' class='px-6 py-4'>";
-                                echo "<a href='Data.php?rm=" . $accounts_filtred['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                echo "</th>";
-                                echo "</tr>";
+                                if ($accounts_filtred['softDelete'] == NULL) {
+                                    echo "<tr class='border-2 border-gray-600 ' >";
+                                    echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['id'] . "</th>";
+                                    echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['rib'] . "</th>";
+                                    echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['devise'] . "</th>";
+                                    echo "<td scope='col' class='px-6 py-4'>" . $accounts_filtred['balance'] . "</th>";
+                                    echo "<td scope='col' class='px-6 py-4'>";
+                                    echo "<a href='Data.php?rm=" . $accounts_filtred['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                    echo "</th>";
+                                    echo "</tr>";
+                                }
                             }
                         ?>
                         </tbody>

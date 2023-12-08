@@ -32,14 +32,19 @@ include('../../-- DATABASE/db-connection.php');
 }
 
 if (isset($_GET['rm'])) {
+
     $id_to_remove = $_GET['rm'];
 
+    $time = new DateTime();
+    $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+    // DELETE FROM `account` WHERE `id` = '$id_to_remove';
     $query = "
-            DELETE FROM `account` WHERE `id` = '$id_to_remove';
+            UPDATE `account`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove';
         ";
 
     $run_query = mysqli_query($cnx, $query);
-    echo "<script>window.alert('Account Deleated Succesfully');</script>";
     header("Location: Accounts.php");
 }
 
@@ -248,17 +253,19 @@ $accountData = $cnx->query($fetchAccounts);
                             
                             <?php
                                 foreach($accountData as $account) {
-                                    echo "<tr class='border-b dark:border-neutral-500'>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" .$account['id'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['rib'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['devise'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['balance'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['user_id'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                        echo "<a href='Accounts.php?upd=". $account['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold' >Edit</a>";
-                                        echo "<a href='Accounts.php?rm=". $account['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                    echo "</td>";
-                                    echo "</tr>";
+                                    if ($account['softDelete'] == NULL) {
+                                        echo "<tr class='border-b dark:border-neutral-500'>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" .$account['id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['rib'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['devise'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['balance'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" .$account['user_id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                            echo "<a href='Accounts.php?upd=". $account['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold' >Edit</a>";
+                                            echo "<a href='Accounts.php?rm=". $account['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
                                 }
                             ?>
                         </tbody>

@@ -67,10 +67,17 @@ $transactionData = $cnx->query($fetchTransactions);
 
 if (isset($_GET['rm'])) {
 
+    $time = new DateTime();
+    $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
     $id_to_delete = $_GET['rm'];
-    $transaction_delete = "DELETE FROM transaction WHERE id = $id_to_delete";
+    $transaction_delete = "
+        UPDATE `transaction`
+        SET softDelete = '$escapedDateTime'
+        WHERE `id` = '$id_to_delete'
+    ";
     $run_delete = mysqli_query($cnx, $transaction_delete);
-    echo "<script>window.alert('Transaction Deleted Succesfully');</script>";
+    // echo "<script>window.alert('Transaction Deleted Succesfully');</script>";
     header("Location: Transactions.php");
 }
 
@@ -172,46 +179,6 @@ if (isset($_GET['rm'])) {
         <!-- PAGE CONTENT ===================== -->
         <main>
 
-        <!-- filter form start============================================================ -->
-        <form method="get" action="Transactions.php" class="flex items-center ">
-                <a href="Transactions.php" class=" ml-40 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 ">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-                    </svg>
-                </a>
-
-                <button type="submit" name="debit" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 ">
-                    Debit
-                </button>
-                
-
-                <?php
-        
-                    // définit $debit
-                    if (isset($_GET['debit'])) {            
-                        // Requête SQL pour la recherche
-                        $fetchusers = "SELECT * FROM transaction WHERE type = 'debit' ";
-                        $transactionData = $cnx->query($fetchusers);
-                    } 
-                ?>
-
-                <button type="submit" name="credit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                    Credit
-                </button>
-
-                <?php
-        
-                    // définit $debit
-                    if (isset($_GET['credit'])) {
-            
-                        // Requête SQL pour la recherche
-                        $fetchusers = "SELECT * FROM transaction WHERE type = 'credit'";
-                        $transactionData = $cnx->query($fetchusers);
-                    } 
-                ?>  
-
-            </form>
-            <!-- filter form end ============================================================== -->
 
             
             <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
@@ -233,17 +200,19 @@ if (isset($_GET['rm'])) {
                                     <tbody>
                                         <?php
                                         foreach ($transactionData as $transaction) {
-                                            echo "<tr class='border-b dark:border-neutral-500' >";
-                                            echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $transaction['id'] . "</td>";
-                                            echo "<td class='whitespace-nowrap px-6 py-4'>" . $transaction['type'] . "</td>";
-                                            echo "<td class='whitespace-nowrap px-6 py-4'>" . $transaction['amount'] . "</td>";
-                                            echo "<td class='whitespace-nowrap px-6 py-4'>" . $transaction['account_id'] . "</td>";
+                                            if ($transaction['softDelete'] == NULL) {
+                                                echo "<tr class='border-b dark:border-neutral-500' >";
+                                                echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $transaction['id'] . "</td>";
+                                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $transaction['type'] . "</td>";
+                                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $transaction['amount'] . "</td>";
+                                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $transaction['account_id'] . "</td>";
 
-                                            echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                            echo "<a href='Transactions.php?upd=" . $transaction['id'] . "' class='bg-blue-600 py-2 px-8 text-white font-bold'>Edit</a>";
-                                            echo "<a href='Transactions.php?rm=" . $transaction['id'] . "' class='bg-red-600 py-2 ml-2 px-8 text-white font-bold'>Remove</a>";
-                                            echo "</td>";
-                                            echo "</tr>";
+                                                echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                                echo "<a href='Transactions.php?upd=" . $transaction['id'] . "' class='bg-blue-600 py-2 px-8 text-white font-bold'>Edit</a>";
+                                                echo "<a href='Transactions.php?rm=" . $transaction['id'] . "' class='bg-red-600 py-2 ml-2 px-8 text-white font-bold'>Remove</a>";
+                                                echo "</td>";
+                                                echo "</tr>";
+                                            }
                                         }
                                         ?>
                                     </tbody>

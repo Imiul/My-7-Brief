@@ -62,7 +62,14 @@
 
         $id_to_remove = $_GET['rm'];
 
-        $remove_bank = "DELETE FROM bank WHERE id = $id_to_remove";
+        $time = new DateTime();
+        $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
+        $remove_bank = "
+            UPDATE `bank`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove'
+        ";
         $run_remove = mysqli_query($cnx, $remove_bank);
         echo "<script>window.alert('bank Deleted successfuly');</script>";
         header("Location: bank.php");
@@ -160,21 +167,22 @@
 
                         <?php
 
-foreach($banksData as $bank) {
-    echo "<tr class='border-b dark:border-neutral-500'>";
-    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['id']. "</td>";
-    echo "<td class='whitespace-nowrap px-6 py-4'>";
-    echo " <img src='../../../Assets/Img/" . $bank['bank_logo'] ."' alt='bank logo' width='150px'>";
-    echo "</td>";
-    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['name']. "</td>";
-    echo "<td class='whitespace-nowrap px-6 py-4'>";
-    echo "<a href='bank.php?upd=" . $bank['id'] . "' class='bg-blue-600 py-2 px-8 text-white font-bold'>Edit</a>";
-    echo "<a href='bank.php?rm=" . $bank['id'] . "' class='bg-red-600 py-2 ml-2 px-8 text-white font-bold'>Remove</a>";
-    echo "</td>";
-
-    echo "</tr>";
-}
-?>
+                            foreach($banksData as $bank) {
+                                if ($bank['softDelete'] == NULL) {
+                                    echo "<tr class='border-b dark:border-neutral-500'>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['id']. "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                    echo " <img src='../../../Assets/Img/" . $bank['bank_logo'] ."' alt='bank logo' width='150px'>";
+                                    echo "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $bank['name']. "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                    echo "<a href='bank.php?upd=" . $bank['id'] . "' class='bg-blue-600 py-2 px-8 text-white font-bold'>Edit</a>";
+                                    echo "<a href='bank.php?rm=" . $bank['id'] . "' class='bg-red-600 py-2 ml-2 px-8 text-white font-bold'>Remove</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+                            }
+                        ?>
                         </tbody>
                         </table>
                     </div>

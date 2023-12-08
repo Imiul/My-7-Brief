@@ -26,12 +26,16 @@
     if (isset($_GET['rm'])) {
         $id_to_remove = $_GET['rm'];
 
+        $time = new DateTime();
+        $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
         $query = "
-            DELETE FROM `permission` WHERE `id` = '$id_to_remove';
+            UPDATE `permission`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove'
         ";
 
         $run_query = mysqli_query($cnx, $query);
-        echo "<script>window.alert('Permition Deleated Succesfully');</script>";
         header("Location: Permition.php");
     }
 
@@ -148,16 +152,16 @@
                         <tbody>
                         <?php
                             foreach($permitionData as $permition) {
-                                
-                                echo "<tr class='border-b dark:border-neutral-500'>";
-                                echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $permition['id'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $permition['name'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                echo "<a href='Permition.php?upd=" . $permition['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
-                                echo "<a href='Permition.php?rm=" . $permition['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                echo "</td>";
-                                echo "</tr>";
-                                
+                                if ($permition['softDelete'] == NULL) {
+                                    echo "<tr class='border-b dark:border-neutral-500'>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $permition['id'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $permition['name'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                    echo "<a href='Permition.php?upd=" . $permition['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
+                                    echo "<a href='Permition.php?rm=" . $permition['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
                             }
                         ?>
                             

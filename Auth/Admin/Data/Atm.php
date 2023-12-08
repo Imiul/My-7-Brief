@@ -48,7 +48,14 @@
 
         $Atm_to_remove = $_GET['rm'];
 
-        $delete_Atm = "DELETE FROM distributeur WHERE id = $Atm_to_remove";
+        $time = new DateTime();
+        $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
+        $delete_Atm = "
+            UPDATE `distributeur`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove'
+        ";
 
         $run_delete = mysqli_query($cnx, $delete_Atm);
         echo "<script>window.alert('distrubuteur Deleted succesfully');</script>";
@@ -179,19 +186,21 @@
                         <tbody>
                             <?php
                                 foreach($AtmData as $Atm) {
-                                    echo "<tr class='border-b dark:border-neutral-500'>";
+                                    if ($Atm['softDelete'] == NULL) {
+                                        echo "<tr class='border-b dark:border-neutral-500'>";
 
-                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $Atm['id'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['longitude'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['latitude'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['bank_id'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['agence_id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $Atm['id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['longitude'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['latitude'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['bank_id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $Atm['agence_id'] . "</td>";
 
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                    echo "<a href='Atm.php?upd=" . $Atm['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
-                                    echo "<a href='Atm.php?rm=" . $Atm['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                    echo "</td>";
-                                    echo "</tr>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                        echo "<a href='Atm.php?upd=" . $Atm['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
+                                        echo "<a href='Atm.php?rm=" . $Atm['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
                                 }
                             ?>
                         </tbody>

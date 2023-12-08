@@ -40,8 +40,14 @@
     if (isset($_GET['rm'])) {
         $id_to_remove = $_GET['rm'];
 
+        $time = new DateTime();
+        $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
+        // DELETE FROM `address` WHERE id = '$id_to_remove';
         $query = "
-            DELETE FROM `address` WHERE id = '$id_to_remove';
+            UPDATE `address`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove'
         ";
 
         $run_query = mysqli_query($cnx, $query);
@@ -195,21 +201,21 @@
                         <tbody>
                         <?php
                             foreach($addresesData as $addres) {
-                                
-                                echo "<tr class='border-b dark:border-neutral-500'>";
-                                echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $addres['id'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['ville'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['quartier'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['rue'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['code_postal'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['email'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['telephone'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                echo "<a href='Addresses.php?upd=" . $addres['id'] ."' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
-                                echo "<a href='Addresses.php?rm=" . $addres['id'] ."' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                echo "</td>";
-                                echo "</tr>";
-                                
+                                if ($addres['softDelete'] == NULL) {
+                                    echo "<tr class='border-b dark:border-neutral-500'>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $addres['id'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['ville'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['quartier'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['rue'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['code_postal'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['email'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $addres['telephone'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                    echo "<a href='Addresses.php?upd=" . $addres['id'] ."' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
+                                    echo "<a href='Addresses.php?rm=" . $addres['id'] ."' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
                             }
                         ?>
                         </tbody>
@@ -234,9 +240,3 @@
 
 </body>
 </html>
-
-
-
-
-
-    

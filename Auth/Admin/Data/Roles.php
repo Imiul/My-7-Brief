@@ -46,8 +46,13 @@
     if (isset($_GET['rm'])) {
         $id_to_remove = $_GET['rm'];
 
+        $time = new DateTime();
+        $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
         $query = "
-            DELETE FROM `role` WHERE `id` = '$id_to_remove';
+            UPDATE `role`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove'
         ";
 
         $run_query = mysqli_query($cnx, $query);
@@ -182,16 +187,16 @@
                         <tbody>
                         <?php
                             foreach($rolesData as $role) {
-                                
-                                echo "<tr class='border-b dark:border-neutral-500'>";
-                                echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $role['id'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>" . $role['name'] . "</td>";
-                                echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                echo "<a href='Roles.php?upd=" . $role['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
-                                echo "<a href='Roles.php?rm=" . $role['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                echo "</td>";
-                                echo "</tr>";
-                                
+                                if ($role['softDelete'] == NULL) {
+                                    echo "<tr class='border-b dark:border-neutral-500'>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $role['id'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $role['name'] . "</td>";
+                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                    echo "<a href='Roles.php?upd=" . $role['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
+                                    echo "<a href='Roles.php?rm=" . $role['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
                             }
                         ?>
                             

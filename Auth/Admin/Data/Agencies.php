@@ -41,8 +41,13 @@
 
         $agency_to_remove = $_GET['rm'];
 
+        $time = new DateTime();
+        $escapedDateTime = mysqli_real_escape_string($cnx, $time->format("Y-m-d H:i:s"));
+
         $deleteQuery = "
-            DELETE FROM agence WHERE id = '$agency_to_remove';
+            UPDATE `agence`
+            SET softDelete = '$escapedDateTime'
+            WHERE `id` = '$id_to_remove'
         ";
 
         $run_delete = mysqli_query($cnx, $deleteQuery);
@@ -180,19 +185,21 @@
 
                             }
                                 foreach($agenceData as $agence) {
-                                    echo "<tr class='border-b dark:border-neutral-500'>";
+                                    if ($agence['softDelete'] == NULL) {
+                                        echo "<tr class='border-b dark:border-neutral-500'>";
 
-                                    echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $agence['id'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['bank_name'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['longitude'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['latitude'] . "</td>";
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['bank_id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4 font-medium'>" . $agence['id'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['bank_name'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['longitude'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['latitude'] . "</td>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>" . $agence['bank_id'] . "</td>";
 
-                                    echo "<td class='whitespace-nowrap px-6 py-4'>";
-                                    echo "<a href='Agencies.php?upd=" . $agence['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
-                                    echo "<a href='Agencies.php?rm=" . $agence['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
-                                    echo "</td>";
-                                    echo "</tr>";
+                                        echo "<td class='whitespace-nowrap px-6 py-4'>";
+                                        echo "<a href='Agencies.php?upd=" . $agence['id'] . "' class='bg-blue-600 mr-4 py-2 px-8 text-white font-bold'>Edit</a>";
+                                        echo "<a href='Agencies.php?rm=" . $agence['id'] . "' class='bg-red-600 py-2 px-8 text-white font-bold'>Remove</a>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
                                 }
                             ?>
                         </tbody>
